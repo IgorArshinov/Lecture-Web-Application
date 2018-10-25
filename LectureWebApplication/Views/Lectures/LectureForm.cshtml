@@ -1,0 +1,47 @@
+﻿@model LectureWebApplication.Core.Viewmodels.LectureFormViewModel
+@{
+    ViewBag.Title = Model.Description;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h3>@Model.Description</h3>
+<hr/>
+@using (Html.BeginForm(Model.Action, "Lectures"))
+{
+    <div class="centered-content-container">
+        <div class="form-group-container">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.Id)
+            <div class="form-group">
+                @Html.LabelFor(m => m.Subject)
+                @Html.TextBoxFor(m => m.Subject, htmlAttributes: new {@class = "form-control", autofocus = "autofocus"})
+                @Html.ValidationMessageFor(m => m.Subject)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Date)
+                @Html.TextBoxFor(m => m.Date, htmlAttributes: new {@class = "form-control", placeholder = "E.g. 1 Jan 2020"})
+                @Html.ValidationMessageFor(m => m.Date)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Time)
+                @Html.TextBoxFor(m => m.Time, htmlAttributes: new {@class = "form-control", placeholder = "E.g. 12:00"})
+                @Html.ValidationMessageFor(m => m.Time)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Department)
+                @Html.DropDownListFor(m => m.Department, new SelectList(Model.Departments, "Id", "Name"), "Choose", htmlAttributes: new {@class = "form-control"})
+                @Html.ValidationMessageFor(m => m.Department)
+            </div>
+            <p class="alert alert-info">
+                All the fields are
+                <strong>required</strong>!
+            </p>
+            <div class="buttons-container">
+                <button class="btn btn-primary" type="submit">Save</button>
+            </div>
+        </div>
+    </div>
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

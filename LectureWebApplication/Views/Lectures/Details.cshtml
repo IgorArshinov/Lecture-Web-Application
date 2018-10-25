@@ -1,0 +1,18 @@
+﻿@using Microsoft.Ajax.Utilities
+@model LectureWebApplication.Core.Viewmodels.LectureDetailsViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h3>
+    <span class="text-capitalize">@Model.Lecture.Subject</span> is the subject of the lecture.
+</h3>
+<hr>
+<p>
+    @Model.Lecture.User.Name is the speaker of the lecture and it starts on @Model.Lecture.DateTime.ToString("d MMM") at @Model.Lecture.DateTime.ToString("HH:MM") at the department of @Model.Lecture.Department.Name.
+</p>
+@if (User.Identity.IsAuthenticated && Model.IsAttending)
+{
+    <p>You are attending this lecture.</p>
+}

@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>@ViewBag.Title - Lecture Web Application</title>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+<nav class="bg-dark fixed-top navbar navbar-dark navbar-expand-lg">
+    <div class="container">
+        <span class="disabled navbar-brand">Lecture Web Application</span>
+        <button aria-controls="navbar-application" aria-expanded="false" aria-label="Toggle navigation" class="collapsed navbar-toggler" data-target="#navbar-application" data-toggle="collapse" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbar-application">
+            <ul class="mr-auto navbar-nav">
+                <li class="nav-item  @(ViewBag.Current == "Index" ? "active" : "")">
+
+                    @Html.ActionLink("Lectures", "Index", "Home", new {area = ""}, new {@class = "nav-link"})
+                </li>
+                <li class="nav-item @(ViewBag.Current == "Create" ? "active" : "")">
+
+                    @Html.ActionLink("Create Lecture", "Create", "Lectures", new {area = ""}, new {@class = "nav-link"})
+                </li>
+            </ul>
+            <ul class="my-md-0 navbar-nav">
+                <li class="nav-item">
+                    <a class="disabled right-nav-link" href="#" id="navItemNotifications">
+                        Notifications
+                        <div class="new-notifications-container">
+                            <span class="glyphicon glyphicon-globe"></span>
+                            <div class="notifications-badge-container">
+                                <span class=".text-hide badge badge-info js-notifications-count"></span>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                @Html.Partial("_LoginPartial")
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="body-content container">
+    @RenderBody()
+    <hr/>
+    <footer>
+        <p>&copy; @DateTime.Now.Year - Lecture Web Application</p>
+    </footer>
+</div>
+@Scripts.Render("~/bundles/lib")
+@Scripts.Render("~/bundles/app")
+@RenderSection("scripts", required: false)
+<script id="notificationsTemplate" type="text/x-template">
+    <ul class="popover-elements">
+        <%
+        _.each(notifications.reverse(),
+            function(notification) {
+                if (notification.type == 1) {
+                    %>
+                    <li>
+                        On <span class="highlight"><%= moment(notification.DateTime).format("D MMM YYYY HH:mm") %></span> the user <span class="highlight"><%=notification.lecture.user.name %></span> canceled the lecture about 
+                        <span class="highlight"><%= notification.lecture.subject %></span> and it was scheduled for <span class="highlight"><%= moment(notification.lecture.dateTime).format("D MMM YYYY HH:mm") %></span>.
+                    </li>
+                    <%
+                } else if (notification.type == 2) {
+                    var changes =  [];
+                    var originalValues =  [];
+                    var updatedValues =  [];
+                    if (notification.originalSubject != notification.updatedSubject)
+                    {
+                        changes.push('subject');
+                        originalValues.push(notification.originalSubject);
+                        updatedValues.push(notification.updatedSubject);
+                    }
+                    if (notification.originalDateTime != notification.updatedDateTime)
+                    {
+                        changes.push('date/time');
+                        originalValues.push(moment(notification.originalDateTime)
+                        .format("D MMM YYYY HH:mm"));
+                        updatedValues.push(moment(notification.updatedDateTime)
+                        .format("D MMM YYYY HH:mm"));
+                    }
+                    if (notification.originalDepartment != notification.updatedDepartment)
+                    {
+                        changes.push('department');
+                        originalValues.push(notification.originalDepartment);
+                        updatedValues.push(notification.updatedDepartment);
+                    }
+                    %>
+                    <li>
+                        On <span class="highlight"><%= moment(notification.DateTime).format("D MMM YYYY HH:mm") %></span> the user <span class="highlight"><%=notification.lecture.user.name %></span> 
+                        has changed the <span class="highlight"><%= changes.join('</span> and <span class="highlight">') %>  </span> of the lecture from <%= originalValues.join('/') %> to <span class="highlight">
+                        <%= updatedValues.join('</span>/<span class="highlight">') %></span>
+                    </li>
+                    <%
+                } else if (notification.type == 3) {
+                    %>
+                    <li>
+                        On <span class="highlight"><%= moment(notification.DateTime).format("D MMM YYYY HH:mm") %></span> the user <span class="highlight"><%=notification.lecture.user.name %></span> created the lecture about 
+                        <span class="highlight"><%= notification.lecture.subject %></span> and it will be on <span class="highlight"><%= moment(notification.lecture.dateTime).format("D MMM YYYY HH:mm") %></span>.
+                    </li>
+                    <%
+                }  
+            })
+        %>
+    </ul> 
+</script>
+<script>
+    $(document)
+        .ready(function() {
+            $.getJSON("/api/notifications",
+                function(notifications) {
+                    if (notifications.length === 0) {
+                        return;
+                    }
+                    $(".js-notifications-count")
+                        .text(notifications.length)
+                        .removeClass("text-hide");
+                    $('#navItemNotifications')
+                        .removeClass("disabled")
+                        .popover({
+                            html: true,
+                            content: function() {
+                                var popoverText = _.template($("#notificationsTemplate")
+                                    .html());
+                                return popoverText({ notifications: notifications });
+                            },
+                            placement: "bottom",
+                            template:
+                                '<div class="popover popover-notifications" role="tooltip">' +
+                                    '<div class="arrow"></div>' +
+                                    '<div class="popover-body"></div>' +
+                                    '</div>'
+                        })
+                        .on("shown.bs.popover",
+                            function() {
+                                $.post("/api/notifications/ChangeIsReadToTrue")
+                                    .done(function() {
+                                        $(".js-notifications-count")
+                                            .addClass("text-hide");
+                                        $('#navItemNotifications')
+                                            .addClass("active");
+                                    });
+                            })
+                        .on("hidden.bs.popover",
+                            function() {
+                                $('#navItemNotifications')
+                                    .removeClass("active");
+                            });
+                });
+        });
+</script>
+</body>
+</html>

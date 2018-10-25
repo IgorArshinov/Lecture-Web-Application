@@ -1,0 +1,77 @@
+﻿@model LectureWebApplication.Core.Viewmodels.LecturesViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+<h3>@Model.Description</h3>
+<hr/>
+@using (Html.BeginForm("Search", "Lectures"))
+{
+    <div class="search">
+        <div class="form-group ">
+            <div class="input-group">
+                @Html.TextBoxFor(m => m.SearchTerm, htmlAttributes: new {type = "search", placeholder = "Search username, department or subject", @class = "form-control"})
+                <div class="input-group-append">
+                    <button class="input-group-text" type="submit">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="centered-content-container">
+    <ul class="lectures" id="lectures">
+
+        @if (Model.UpcomingLectures == null)
+        {
+            <li>
+                <br/>no items found
+            </li>
+        }
+        else
+        {
+            foreach (var lecture in Model.UpcomingLectures)
+            {
+                <li>
+                    <div class="card  mb-3 ml-3 mr-3 mt-3">
+                        <div class="bg-transparent card-header">
+                            <div class="card-title text-capitalize"> @lecture.Subject</div>
+                        </div>
+                        <div class="card-body ">
+                            <h4 class="card-subtitle">Speaker</h4>
+                            <div class="card-text"> @lecture.User.Name</div>
+                            <h4 class="card-subtitle">Date and Time</h4>
+                            <div class="card-text">@lecture.DateTime.ToString("g")</div>
+                            <h4 class="card-subtitle">Department</h4>
+                            <div class="card-text"> @lecture.Department.Name</div>
+                        </div>
+                        <div class="bg-transparent card-footer">
+                            <a role="button" class="btn btn-light" href="@Url.Action("Details", "Lectures", new {id = lecture.Id})">
+                                Details
+                            </a>
+                            @if (lecture.IsCanceled)
+                            {
+                                <span class="btn btn-danger disabled">Canceled</span>
+                            }
+
+                            @if (Model.ShowActions && !lecture.IsCanceled)
+                            {
+                                <button data-lecture-id="@lecture.Id" class="btn @(Model.Attendances.Contains(lecture.Id) ? "btn-info" : "btn-default")  js-toggle-attendance">@(Model.Attendances.Contains(lecture.Id) ? "Attending" : "Enroll")</button>
+                            }
+                        </div>
+                    </div>
+                </li>
+            }
+        }
+
+    </ul>
+</div>
+@section scripts
+{
+    <script>
+        $(document)
+            .ready(function() {
+                LecturesController.init("#lectures");
+            });
+    </script>
+}

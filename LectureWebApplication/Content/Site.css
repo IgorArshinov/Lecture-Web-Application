@@ -1,0 +1,182 @@
+﻿@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
+
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.bg-dark {
+    background-color: #4682b4 !important;
+    background-color: rgba(70, 130, 180, 0.9) !important;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+
+.dl-horizontal dt { white-space: normal; }
+
+input, select, textarea { max-width: 280px; }
+
+body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 { font-family: 'Source Sans Pro', sans-serif, "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+.search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search .form-group { width: 280px; }
+
+.card { min-width: 20rem; }
+
+.card-footer {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}
+
+.card-footer > :not(:first-child) { margin-left: .25rem; }
+
+.card-footer > :not(:last-child) { margin-right: .25rem; }
+
+.buttons-container { text-align: center; }
+
+.form-group-container { width: 280px; }
+
+.centered-content-container {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+.field-validation-error {
+    color: red;
+    font-size: small;
+}
+
+body { padding-top: 70px; }
+
+.lectures {
+    list-style-type: none;
+    padding: initial;
+}
+
+.lectures > li { display: inline-block; }
+
+.text-capitalize { text-transform: capitalize; }
+
+.card-text { font-weight: bold; }
+
+.card-title {
+    font-size: large;
+    text-transform: capitalize;
+}
+
+.card-subtitle {
+    margin-top: 1rem;
+    margin-bottom: 0.125rem;
+}
+
+.card-text:last-child { margin-bottom: 1.75rem; }
+
+.card-title {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.popover { top: -0.4rem !important; }
+
+.new-notifications-container {
+    display: inline-block;
+    margin-left: 3px;
+}
+
+.nav-link { display: inline-block; }
+
+ul.navbar-nav li.nav-item .new-notifications-container .glyphicon { top: 3px; }
+
+ul.navbar-nav li.nav-item .new-notifications-container .notifications-badge-container {
+    position: relative;
+    bottom: 1.1em;
+}
+
+ul.navbar-nav li.nav-item .new-notifications-container .notifications-badge-container span.badge {
+    position: absolute;
+    margin: 0;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    background: greenyellow;
+    color: black;
+}
+
+.popover-notifications ul.popover-elements {
+    list-style: none;
+    padding-left: 0;
+}
+
+.popover-notifications ul.popover-elements > li {
+    border-bottom: 1px solid #000000;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    padding: 10px;
+}
+
+.popover-notifications ul.popover-elements > li:last-child { border-bottom: none; }
+
+.popover-notifications .popover-body { padding: 0; }
+
+.popover-notifications ul.popover-elements .highlight { font-weight: bold; }
+
+footer { text-align: center; }
+
+.right-nav-link {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+}
+
+.right-nav-link:hover, .right-nav-link:focus { text-decoration: none; }
+
+.right-nav-link.disabled { color: #6c757d; }
+
+.navbar-nav .right-nav-link {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+@media (min-width: 992px) {
+    .navbar-expand-lg .navbar-nav .right-nav-link {
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+    }
+}
+
+button:focus { outline: none; }
+
+.disabled { cursor: default; }
+
+.navbar-dark .navbar-nav .right-nav-link {
+    color: #ffffff;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.navbar-dark .navbar-nav .right-nav-link:hover {
+    color: #ffffff;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.navbar-dark .navbar-nav .right-nav-link.disabled {
+    color: #ffffff;
+    color: rgba(255, 255, 255, 0.25);
+}
+
+.navbar-dark .navbar-nav .show > .right-nav-link, .navbar-dark .navbar-nav .active > .right-nav-link, .navbar-dark .navbar-nav .right-nav-link.show, .navbar-dark .navbar-nav .right-nav-link.active { color: #fff; }
